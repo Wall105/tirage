@@ -3,17 +3,17 @@ window.TIRAGE_DATA = [
   {
     id: 'pass-1', title: 'Pass de combat #1', shortTitle: 'Pass de combat',
     subtitle: 'Le premier pass de la soirée. À qui le tour ?', accent: '#ff7625', requiredDraws: 1,
-    participants: ['ftn AIZU', 'SALOME', 'SARAH', "CAIM'S", 'ALEX', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'ZAPOR', 'TOGNO', 'VWEX', 'TIGROU', 'KEYBOT', 'GABINOO', 'JOGA', 'KARZOX', 'LUNYX', 'RYX']
+    participants: ['ftn AIZU', 'SALOME', 'SARAH', "CAIM'S", 'ALEX', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'ZAPOR', 'TOGNO', 'VWEX', 'TIGROU', 'KEYBOT', 'GABINOO', 'JOGA', 'KARZOX', 'LUNYX', 'RYX','MOMOY']
   },
   {
     id: 'pass-2', title: 'Pass de combat #2', shortTitle: 'Pass de combat',
     subtitle: 'Une autre roue, une nouvelle chance de gagner.', accent: '#ba7cf5', requiredDraws: 1,
-    participants: ['ftn AIZU', 'SALOME', 'SARAH', "CAIM'S", 'ALEX', 'ZERNES', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'ZAPOR', 'TOGNO', 'VWEX', 'TIGROU', 'KEYBOT', 'GABINOO', 'JOGA', 'KARZOX', 'LUNYX', 'RYX']
+    participants: ['ftn AIZU', 'SALOME', 'SARAH', "CAIM'S", 'ALEX', 'ZERNES', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'ZAPOR', 'TOGNO', 'VWEX', 'TIGROU', 'KEYBOT', 'GABINOO', 'JOGA', 'KARZOX', 'LUNYX', 'RYX','MOMOY']
   },
   {
     id: 'pass-3', title: 'Pass de combat #3', shortTitle: 'Pass de combat',
     subtitle: 'Le troisième pass attend son prochain propriétaire.', accent: '#ffac55', requiredDraws: 1,
-    participants: ['ftn AIZU', 'SALOME', 'SARAH', "CAIM'S", 'ALEX', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'ZAPOR', 'TOGNO', 'VWEX', 'TIGROU', 'JUJU', 'KEYBOT', 'GABINOO', 'JOGA', 'LUNYX', 'RYX']
+    participants: ['ftn AIZU', 'SALOME', 'SARAH', "CAIM'S", 'ALEX', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'ZAPOR', 'TOGNO', 'VWEX', 'TIGROU', 'JUJU', 'KEYBOT', 'GABINOO', 'JOGA', 'LUNYX', 'RYX','MOMOY']
   },
   {
     id: 'steelseries', title: 'Code promo SteelSeries', shortTitle: 'Code SteelSeries',
