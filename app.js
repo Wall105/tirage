@@ -6,7 +6,6 @@
   const prizes = window.TIRAGE_DATA;
   const $ = id => document.getElementById(id);
   const normalize = value => value.normalize('NFKC').trim().toLocaleLowerCase('fr');
-  const euro = value => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const freshState = () => ({
     version: 1, selected: prizes[0].id,
@@ -115,7 +114,7 @@
       const copy = element('span', 'prize-card-copy');
       copy.append(element('span', 'prize-card-kicker', `ROUE 0${index + 1}`));
       copy.append(element('strong', '', prize.shortTitle));
-      copy.append(element('small', '', index < 3 ? `Pass n°${index + 1} · ${euro(prize.value)}` : index < 5 ? `Event Discord · ${euro(prize.value)}` : '2 cartes · 50 € au total'));
+      copy.append(element('small', '', index < 3 ? `Pass n°${index + 1}` : index < 5 ? 'Event Discord' : '2 cartes cadeaux'));
       const meta = element('span', 'prize-card-meta');
       meta.append(element('span', 'prize-count', String(eligible(prize.id).length)));
       meta.append(element('span', `prize-status${drawn ? ' is-drawn' : ''}`, status));
@@ -229,8 +228,6 @@
     $('selectedKicker').textContent = `TIRAGE 0${prizes.indexOf(prize) + 1} / 06`;
     $('selectedTitle').textContent = prize.title;
     $('selectedSubtitle').textContent = prize.subtitle;
-    $('selectedValue').textContent = prize.id === 'amazon' ? '50 € au total' : euro(prize.value);
-    $('prizeTotal').textContent = euro(prizes.reduce((total, entry) => total + entry.value, 0));
     renderPrizes(); renderWheel(); renderParticipants(); renderHistory(); updateControls();
   }
 
@@ -304,7 +301,7 @@
     $('winnerName').textContent = result.name;
     $('winnerPrize').textContent = prize.title;
     $('winnerNote').textContent = prize.id === 'amazon'
-      ? `${count <= prize.requiredDraws ? `Carte ${count}/${prize.requiredDraws}` : 'Tirage supplémentaire'} · Deux cartes cadeaux Amazon, 50 € au total. Résultat sauvegardé. ${winnerEligibility}`
+      ? `${count <= prize.requiredDraws ? `Carte ${count}/${prize.requiredDraws}` : 'Tirage supplémentaire'} · Deux cartes cadeaux Amazon. Résultat sauvegardé. ${winnerEligibility}`
       : `Résultat sauvegardé. ${winnerEligibility}`;
     $('removeWinnerButton').disabled = !state.lists[result.prizeId].some(name => normalize(name) === normalize(result.name));
     $('removeWinnerButton').textContent = 'Retirer de cette roue';
@@ -383,10 +380,10 @@
       if (/^[=+\-@\t\r]/.test(text)) text = `'${text}`;
       return `"${text.replaceAll('"', '""')}"`;
     };
-    const rows = [['Date (Paris)', 'Cadeau', 'Gagnant', 'Valeur du lot (€)']];
+    const rows = [['Date (Paris)', 'Cadeau', 'Gagnant']];
     state.history.forEach(item => {
       const prize = prizes.find(entry => entry.id === item.prizeId);
-      rows.push([new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'medium', timeZone: 'Europe/Paris' }).format(new Date(item.timestamp)), prize.title, item.name, prize.id === 'amazon' ? '50 (total des 2 cartes)' : prize.value.toFixed(2).replace('.', ',')]);
+      rows.push([new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'medium', timeZone: 'Europe/Paris' }).format(new Date(item.timestamp)), prize.title, item.name]);
     });
     const csv = '\uFEFF' + rows.map(row => row.map(quote).join(';')).join('\r\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
