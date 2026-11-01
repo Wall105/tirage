@@ -2,13 +2,14 @@
   'use strict';
 
   const STORAGE_KEY = 'squadir-halloween-tirage-v1';
+  const ROSTER_REVISION = 1;
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const prizes = window.TIRAGE_DATA;
   const $ = id => document.getElementById(id);
   const normalize = value => value.normalize('NFKC').trim().toLocaleLowerCase('fr');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const freshState = () => ({
-    version: 1, selected: prizes[0].id,
+    version: 1, rosterRevision: ROSTER_REVISION, selected: prizes[0].id,
     lists: Object.fromEntries(prizes.map(prize => [prize.id, [...prize.participants]])),
     history: [], excludeWinners: false, sound: true
   });
@@ -51,6 +52,17 @@
       }
       state.excludeWinners = saved.excludeWinners === true;
       state.sound = saved.sound !== false;
+      state.rosterRevision = Number.isSafeInteger(saved.rosterRevision) && saved.rosterRevision >= 0 ? saved.rosterRevision : 0;
+      if (state.rosterRevision < ROSTER_REVISION) {
+        const fullLists = [];
+        for (const id of ['pass-1', 'pass-2', 'pass-3', 'amazon']) {
+          if (state.lists[id].some(name => normalize(name) === 'momoy')) continue;
+          if (state.lists[id].length < 100) state.lists[id].push('MOMOY');
+          else fullLists.push(prizes.find(prize => prize.id === id).title);
+        }
+        state.rosterRevision = ROSTER_REVISION;
+        return { fullLists };
+      }
     } catch (_) { storageAvailable = false; }
   }
 
@@ -481,6 +493,9 @@
     event.preventDefault(); spin();
   });
 
-  restore(); render();
+  const migrated = restore();
+  if (migrated) save();
+  render();
+  if (migrated?.fullLists.length) notify(`MOMOY n’a pas été ajouté aux listes pleines (${migrated.fullLists.join(', ')}). Modifie ces listes pour libérer une place et l’ajouter.`);
   if (!storageAvailable) notify('Le site est prêt. La sauvegarde locale est indisponible dans ce navigateur.');
 })();
