@@ -21,6 +21,7 @@
   let audioContext;
   let toastTimer;
   let confettiTimer;
+  let tickTimer;
 
   function cleanNames(lines) {
     const seen = new Set();
@@ -159,6 +160,8 @@
       segment.setAttribute('fill', colors[index % colors.length]);
       segment.setAttribute('stroke', '#d7ad8640');
       segment.setAttribute('stroke-width', '1');
+      segment.setAttribute('class', 'wheel-segment');
+      segment.setAttribute('data-index', index);
       rotor.append(segment);
       const label = document.createElementNS(SVG_NS, 'text');
       const mid = start + slice / 2;
@@ -170,6 +173,8 @@
       label.setAttribute('font-family', 'Arial, sans-serif');
       label.setAttribute('font-weight', '700');
       label.setAttribute('letter-spacing', '.35');
+      label.setAttribute('class', 'wheel-label');
+      label.setAttribute('data-index', index);
       label.textContent = name.length > 22 ? `${name.slice(0, 21)}…` : name;
       rotor.append(label);
     });
@@ -325,6 +330,29 @@
     confetti();
   }
 
+  // Vitesses raccordées sans à-coup : faux arrêt, relance, puis six secondes au ralenti.
+  const SPIN_PROFILE = [[0, 0], [2, 950], [5, 700], [8, 8], [9, 5], [11.5, 800], [14, 350], [17, 9], [20, 3], [23, 0]];
+  const SPIN_DISTANCE = SPIN_PROFILE.slice(1).reduce((sum, [time, speed], index) => {
+    const [previousTime, previousSpeed] = SPIN_PROFILE[index];
+    return sum + (time - previousTime) * (previousSpeed + speed) / 2;
+  }, 0);
+
+  function spinMotion(seconds) {
+    let distance = 0;
+    for (let i = 1; i < SPIN_PROFILE.length; i++) {
+      const [t0, v0] = SPIN_PROFILE[i - 1];
+      const [t1, v1] = SPIN_PROFILE[i];
+      const duration = t1 - t0;
+      if (seconds >= t1) { distance += duration * (v0 + v1) / 2; continue; }
+      const u = Math.max(0, (seconds - t0) / duration);
+      // Intégrale de v0 + (v1-v0) × smoothstep(u), toujours positive.
+      distance += duration * (v0 * u + (v1 - v0) * (u ** 3 - u ** 4 / 2));
+      const speed = v0 + (v1 - v0) * (3 * u ** 2 - 2 * u ** 3);
+      return { progress: distance / SPIN_DISTANCE, speed: speed / SPIN_DISTANCE };
+    }
+    return { progress: 1, speed: 0 };
+  }
+
   function spin() {
     if (spinning || document.querySelector('dialog[open]')) return;
     const names = eligible();
@@ -334,39 +362,75 @@
     unlockAudio();
     spinning = true;
     renderPrizes(); updateControls();
+    clearTimeout(tickTimer);
+    $('wheel').classList.remove('is-ticking');
     $('wheel').classList.add('is-spinning');
     const slice = 360 / names.length;
-    // Les secteurs commencent à -90°. Le centre du secteur choisi finit à midi.
-    const destination = ((360 - (index + 0.5) * slice) % 360 + 360) % 360;
+    // Les secteurs commencent à -90°. Le gagnant arrive à droite, texte horizontal.
+    const destination = ((90 - (index + 0.5) * slice) % 360 + 360) % 360;
     const start = rotation;
     const delta = ((destination - (start % 360)) + 360) % 360;
-    const target = start + 360 * 7 + delta;
-    const duration = reducedMotion.matches ? 150 : 6500;
+    const target = start + 360 * 21 + delta;
+    const shortAnimation = reducedMotion.matches;
+    const duration = shortAnimation ? 150 : 23000;
     const started = performance.now();
-    let previousTick = -1;
+    let previousBoundary = Math.floor((start - 90) / slice);
+    let stopped = false;
+    let highlighted = -1;
+    const segments = Array.from($('wheelRotor').querySelectorAll('.wheel-segment'));
+    const labels = Array.from($('wheelRotor').querySelectorAll('.wheel-label'));
+    function highlight(candidate) {
+      if (candidate === highlighted) return;
+      if (highlighted >= 0) {
+        segments[highlighted].classList.remove('is-current');
+        labels[highlighted].classList.remove('is-current');
+      }
+      highlighted = candidate;
+      if (candidate >= 0) {
+        segments[candidate].classList.add('is-current');
+        labels[candidate].classList.add('is-current');
+      }
+    }
     const result = {
       id: window.crypto.randomUUID?.() || `${Date.now()}-${index}-${state.history.length}`,
       prizeId: state.selected, name: names[index], timestamp: 0
     };
     function frame(now) {
+      if (stopped) return;
       const progress = Math.min(1, Math.max(0, (now - started) / duration));
-      const eased = 1 - Math.pow(1 - progress, 5);
-      rotation = start + (target - start) * eased;
+      const motion = shortAnimation ? { progress: progress === 1 ? 1 : 0, speed: 0 } : spinMotion(progress * 23);
+      rotation = start + (target - start) * motion.progress;
       $('wheelRotor').setAttribute('transform', `rotate(${rotation} 300 300)`);
-      const tick = Math.floor(rotation / slice);
-      if (tick !== previousTick && progress < 0.99) { previousTick = tick; tone(470 + progress * 190); }
+      const boundary = Math.floor((rotation - 90) / slice);
+      if (boundary !== previousBoundary && progress < 1 && !shortAnimation && names.length > 1) {
+        tone(470 + progress * 190);
+        $('wheel').classList.add('is-ticking');
+        clearTimeout(tickTimer);
+        tickTimer = setTimeout(() => $('wheel').classList.remove('is-ticking'), 120);
+      }
+      previousBoundary = boundary;
+      const candidate = Math.floor(((90 - rotation) % 360 + 360) % 360 / slice);
+      highlight(progress === 1 ? index : !shortAnimation && progress > 0.15 && motion.speed * (target - start) < 35 ? candidate : -1);
       if (progress < 1) { requestAnimationFrame(frame); return; }
-      rotation = destination;
-      $('wheelRotor').setAttribute('transform', `rotate(${rotation} 300 300)`);
-      spinning = false;
+      stopped = true;
+      clearTimeout(tickTimer);
+      $('wheel').classList.remove('is-ticking');
       $('wheel').classList.remove('is-spinning');
       result.timestamp = Date.now();
       state.history.push(result);
       if (state.history.length > 5000) state.history.shift();
       lastResult = result;
       save(); renderPrizes(); renderHistory(); renderParticipants(); updateControls();
-      // La roue reste sur le résultat pendant sa révélation.
-      showWinner(result);
+      $('spinLabel').textContent = 'Le sort est scellé…';
+      $('stageStatus').textContent = 'Le gagnant se révèle…';
+      // Résultat déjà sauvegardé ; le tirage reste verrouillé pendant la lecture de la roue.
+      const reveal = () => {
+        spinning = false;
+        renderPrizes(); updateControls();
+        showWinner(result);
+      };
+      if (shortAnimation) reveal();
+      else setTimeout(reveal, 1200);
     }
     requestAnimationFrame(frame);
   }
