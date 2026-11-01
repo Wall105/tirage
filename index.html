@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100e13">
+  <meta name="description" content="Les tirages Halloween de Squadir : six roues, des cadeaux et un peu de magie noire.">
+  <title>La roue des ombres · Squadir</title>
+  <link rel="icon" href="assets/pumpkin.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="icon-ticket" viewBox="0 0 24 24"><path d="M4 5h16v5a2 2 0 0 0 0 4v5H4v-5a2 2 0 0 0 0-4zM15 5v3m0 3v2m0 3v3"/></symbol>
+      <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></symbol>
+      <symbol id="icon-gift" viewBox="0 0 24 24"><path d="M3 9h18v4H3zm2 4v8h14v-8M12 9v12"/><path d="M12 9C3 9 5 1 9 4c2 1 3 5 3 5Zm0 0c9 0 7-8 3-5-2 1-3 5-3 5Z"/></symbol>
+      <symbol id="icon-volume" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5zm4 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+      <symbol id="icon-expand" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><path d="m10 3-.6 2.4-2 .9L5 5.6 2.8 9.4l1.8 1.7v2l-1.8 1.7L5 18.6l2.4-.7 2 .9L10 21h4l.6-2.2 2-.9 2.4.7 2.2-3.8-1.8-1.7v-2l1.8-1.7L19 5.6l-2.4.7-2-.9L14 3Z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m0-16a3 3 0 0 1 0 6m3 3a5 5 0 0 1 3 4v3"/></symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24"><path d="m15 4 5 5M4 20l5-1L21 7l-5-5L4 14zm0 0h16"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+      <symbol id="icon-shuffle" viewBox="0 0 24 24"><path d="M3 5h3c5 0 7 14 12 14h3m-4-4 4 4-4 4M3 19h3c2 0 4-3 6-7s4-7 6-7h3m-4-4 4 4-4 4"/></symbol>
+      <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+      <symbol id="icon-ghost" viewBox="0 0 80 80"><path d="M17 66V34a23 23 0 0 1 46 0v32l-8-6-8 6-8-6-8 6-7-6z"/><ellipse cx="32" cy="34" rx="3" ry="5"/><ellipse cx="49" cy="34" rx="3" ry="5"/><path d="M36 47q4-4 8 0"/></symbol>
+      <symbol id="web" viewBox="0 0 150 150"><g fill="none" stroke="currentColor" stroke-width=".8"><path d="M0 0h150M0 0l145 40M0 0l111 84M0 0l68 123M0 0l25 145M0 0v150M30 0q-2 6-1 8-7-1-7 9-9-3-8 8-7 1-9 4-3-2-5 1M60 0q-6 13-2 16-13 0-14 17-18-3-17 16-13 2-17 9-6-3-10 2M95 0q-9 20-3 26-22-2-22 27-26-5-27 25-22 3-27 14-8-4-16 3M125 0q-12 26-4 33-29-3-29 37-35-7-35 33-28 3-36 18-11-5-21 4M150 0q-12 32-5 40-35-3-34 44-45-7-43 39-35 1-43 22-16-7-25 5"/></g></symbol>
+    </defs>
+  </svg>
+
+  <div class="ambient" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <svg class="corner-web corner-web-left" aria-hidden="true"><use href="#web"/></svg>
+  <svg class="corner-web corner-web-right" aria-hidden="true"><use href="#web"/></svg>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Squadir, accueil"><img src="assets/pumpkin.svg" alt="" width="38" height="38"><span>SQUADIR<span class="brand-dot">.</span></span><span class="brand-divider"></span><span class="brand-event">HALLOWEEN EDITION</span></a>
+      <div class="topbar-actions">
+        <span class="session-indicator"><i></i> Que le sort décide</span>
+        <button class="icon-button" id="soundButton" aria-label="Activer le son" title="Activer / couper le son" aria-pressed="false"><svg><use href="#icon-volume"/></svg></button>
+        <button class="icon-button" id="fullscreenButton" aria-label="Passer en plein écran" title="Plein écran"><svg><use href="#icon-expand"/></svg></button>
+        <button class="icon-button" id="settingsButton" aria-label="Ouvrir les réglages" title="Réglages"><svg><use href="#icon-settings"/></svg></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="pageTitle">
+        <div class="intro-copy"><p class="eyebrow"><span></span> LA NUIT PORTE CHANCE</p><h1 id="pageTitle">LA ROUE <span>DES OMBRES</span><svg aria-hidden="true"><use href="#icon-spark"/></svg></h1><p>Des cadeaux, des frissons… et un seul tour pour changer le destin.</p></div>
+        <div class="event-stats"><div><strong>06</strong><span>ROUES À HANTER</span></div><div class="stat-total"><strong id="prizeTotal">94,95<span> €</span></strong><span>DE CADEAUX</span></div></div>
+      </section>
+
+      <div class="draw-layout">
+        <aside class="prizes-panel" aria-labelledby="prizesHeading">
+          <div class="section-heading"><h2 id="prizesHeading">LES CADEAUX</h2><span class="small-counter">06</span></div>
+          <p class="panel-intro">Choisis la roue à invoquer.</p>
+          <div id="prizeList" class="prize-list" aria-label="Choix du cadeau"></div>
+          <div class="prize-note"><svg><use href="#icon-spark"/></svg><p>Chaque cadeau a sa propre liste de participants.</p></div>
+          <div class="discord-note"><span class="discord-dot"></span><div><strong>Déjà servis sur Discord</strong><p>Bryan &amp; Mateo ne participent pas aux roues des pass.</p></div></div>
+        </aside>
+
+        <section class="wheel-stage" aria-labelledby="selectedTitle">
+          <div class="stage-top"><div><p class="eyebrow" id="selectedKicker">LOT 01 / 06</p><h2 id="selectedTitle">Pass de combat #1</h2><p id="selectedSubtitle">Un nouveau pass, une nouvelle aventure.</p></div><span class="value-tag" id="selectedValue">8,99 €</span></div>
+          <div class="wheel-area">
+            <div class="wheel-orbit" aria-hidden="true"></div>
+            <div class="wheel-orbit orbit-two" aria-hidden="true"></div>
+            <span class="wheel-spark spark-one" aria-hidden="true">✧</span><span class="wheel-spark spark-two" aria-hidden="true">✦</span><span class="wheel-spark spark-three" aria-hidden="true">+</span>
+            <svg class="stage-web" aria-hidden="true"><use href="#web"/></svg>
+            <svg class="hanging-spider" viewBox="0 0 50 110" aria-hidden="true"><path d="M25 0v60" fill="none" stroke="#ac8cbb" stroke-width=".7"/><g fill="none" stroke="#9e78b6" stroke-width="1.3" stroke-linecap="round"><path d="m21 70-9-8-5 2m13 11-13-2-4 5m17 1L9 85l-1 6m15-9-6 10 1 6m11-28 9-8 5 2M30 75l13-2 4 5m-17 1 11 6 1 6m-15-9 6 10-1 6"/><ellipse cx="25" cy="71" rx="7" ry="11" fill="#2b1936"/><ellipse cx="25" cy="84" rx="4.5" ry="5" fill="#24152b"/></g><path d="m22 65 6 0-3 6 3 5-6 0 3-5Z" fill="#ed904d"/><g fill="#ffbe7c"><circle cx="23.5" cy="85" r=".7"/><circle cx="26.5" cy="85" r=".7"/></g></svg>
+            <div class="wheel-shell">
+              <div class="wheel-pointer" aria-hidden="true"><svg viewBox="0 0 40 54"><defs><linearGradient id="pointerGradient" x2="0" y2="1"><stop stop-color="#ffcc86"/><stop offset="1" stop-color="#ff6925"/></linearGradient></defs><path d="M4 5 20 48 36 5 20 12Z" fill="url(#pointerGradient)" stroke="#ffc584" stroke-width="1.5"/><path d="m20 17 0 22" stroke="#7e2f15"/></svg></div>
+              <svg id="wheel" viewBox="0 0 600 600" role="img" aria-label="Roue de tirage des participants">
+                <defs><radialGradient id="wheelShade"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient><radialGradient id="hubGradient" cx=".4" cy=".3"><stop stop-color="#38303d"/><stop offset=".7" stop-color="#211b27"/><stop offset="1" stop-color="#151119"/></radialGradient><linearGradient id="rimGradient" x2=".7" y2="1"><stop stop-color="#8b6b72"/><stop offset=".3" stop-color="#2d2634"/><stop offset=".7" stop-color="#573c44"/><stop offset="1" stop-color="#d08550"/></linearGradient></defs>
+                <circle cx="300" cy="300" r="297" fill="#19141d" stroke="#453346" stroke-width="2"/>
+                <circle cx="300" cy="300" r="291" fill="none" stroke="url(#rimGradient)" stroke-width="8"/>
+                <circle cx="300" cy="300" r="285" fill="#18111e" stroke="#ffa858" stroke-width="1.5"/>
+                <g id="wheelRotor"></g>
+                <circle cx="300" cy="300" r="279" fill="url(#wheelShade)" pointer-events="none"/>
+                <circle cx="300" cy="300" r="282" fill="none" stroke="#fba25b" stroke-width="2" stroke-dasharray="1 13.76" stroke-linecap="round" opacity=".85"/>
+                <circle cx="300" cy="300" r="66" fill="#0c0910" stroke="#8b553a" stroke-width="1"/>
+                <circle cx="300" cy="300" r="60" fill="url(#hubGradient)" stroke="#ff9b48" stroke-width="2"/>
+                <circle cx="300" cy="300" r="51" fill="none" stroke="#665266" stroke-width=".7"/>
+              </svg>
+              <div class="wheel-hub" aria-hidden="true"><img src="assets/pumpkin.svg" width="40" height="40" alt=""><strong id="wheelCount">21</strong><span>ÂMES EN JEU</span></div>
+            </div>
+          </div>
+          <div class="wheel-information"><span><svg><use href="#icon-users"/></svg><strong id="participantCount">21</strong> participants</span><span class="information-dot">·</span><span id="odds">1 chance sur 21</span></div>
+          <div class="spin-actions"><button id="shuffleButton" class="secondary-button shuffle-button" title="Mélanger l’ordre des participants" aria-label="Mélanger les participants"><svg><use href="#icon-shuffle"/></svg></button><button id="spinButton" class="spin-button"><svg><use href="#icon-spark"/></svg><span id="spinLabel">INVOQUER LE SORT</span><svg class="spin-arrow"><use href="#icon-arrow"/></svg></button></div>
+          <p class="stage-status" id="stageStatus" aria-live="polite">La roue attend son prochain élu.</p>
+          <p class="keyboard-hint"><kbd>ESPACE</kbd> pour lancer la roue</p>
+          <img class="stage-pumpkin" src="assets/pumpkin.svg" alt="" width="80" height="80" aria-hidden="true">
+        </section>
+
+        <aside class="participants-panel" aria-labelledby="participantsHeading">
+          <div class="section-heading"><h2 id="participantsHeading">LES ÂMES EN JEU</h2><span class="small-counter" id="listCount">21</span></div>
+          <p class="panel-intro">Le prochain nom sera peut-être le tien.</p>
+          <label class="search-box"><svg aria-hidden="true"><use href="#icon-search"/></svg><input type="search" id="searchParticipants" placeholder="Chercher un pseudo…" aria-label="Chercher un participant" autocomplete="off"></label>
+          <div class="participants-column-labels" aria-hidden="true"><span>N°</span><span>PARTICIPANT</span><span>EN LICE</span></div>
+          <ol id="participantsList" class="participants-list" aria-label="Participants de cette roue"></ol>
+          <button id="editParticipantsButton" class="edit-button"><svg><use href="#icon-edit"/></svg>Modifier les participants</button>
+          <p class="participants-note">Un pseudo = une chance.<br>À toi de jouer, le hasard fait le reste.</p>
+        </aside>
+      </div>
+
+      <section class="history-section" aria-labelledby="historyHeading">
+        <div class="history-heading"><div class="section-heading"><svg><use href="#icon-clock"/></svg><h2 id="historyHeading">LE GRIMOIRE DES GAGNANTS</h2><span class="small-counter" id="historyCount">0</span></div><div class="history-actions"><span><strong id="drawCount">0</strong> tirage(s) · <strong id="remainingCount">6</strong> roue(s) à découvrir</span><button id="exportButton" class="text-button"><svg><use href="#icon-download"/></svg>Exporter</button></div></div>
+        <div id="emptyHistory" class="empty-history"><svg><use href="#icon-ghost"/></svg><div><strong>Les esprits n’ont encore choisi personne.</strong><p>Lance une roue pour inscrire le premier nom dans le grimoire.</p></div><span class="empty-stars" aria-hidden="true">✧ · ✦</span></div>
+        <ol id="historyList" class="history-list" aria-live="polite"></ol>
+      </section>
+    </main>
+
+    <footer><span><i></i> Session sauvegardée sur ce navigateur</span><p>UN PEU DE HASARD. BEAUCOUP DE FRISSONS.</p><span>SQUADIR <span class="footer-cross">✦</span> HALLOWEEN</span></footer>
+  </div>
+
+  <dialog id="winnerDialog" class="modal winner-modal" aria-labelledby="winnerHeading">
+    <div id="confetti" aria-hidden="true"></div>
+    <button id="closeWinner" class="icon-button modal-close" aria-label="Fermer le résultat"><svg><use href="#icon-close"/></svg></button>
+    <div class="winner-emblem"><img src="assets/pumpkin.svg" width="80" height="80" alt=""></div>
+    <p class="eyebrow" id="winnerHeading">LES ESPRITS ONT CHOISI</p><h2 id="winnerName"></h2><p class="winner-intro">remporte</p><p id="winnerPrize"></p><p id="winnerNote" class="modal-hint"></p>
+    <button id="nextPrizeButton" class="spin-button">Passer au cadeau suivant <svg><use href="#icon-arrow"/></svg></button><button id="removeWinnerButton" class="text-button">Retirer ce gagnant de cette roue</button>
+  </dialog>
+
+  <dialog id="editDialog" class="modal" aria-labelledby="editTitle"><form id="editForm">
+    <p class="eyebrow">LE CERCLE DES PARTICIPANTS</p><h2 id="editTitle">Modifier les participants</h2><p id="editHelp" class="modal-hint">Un pseudo par ligne. Les doublons sont retirés automatiquement.<br>100 participants maximum, 40 caractères par pseudo.</p>
+    <label class="field-label" for="participantsInput">Pseudos de cette roue</label><textarea id="participantsInput" rows="12" spellcheck="false" aria-describedby="editHelp editError" required></textarea><p id="editError" class="form-error" role="alert"></p><div class="modal-actions"><button id="cancelEdit" type="button" class="secondary-button">Annuler</button><button id="saveParticipants" type="submit" class="primary-button">Enregistrer la liste</button></div>
+  </form></dialog>
+
+  <dialog id="settingsDialog" class="modal" aria-labelledby="settingsTitle"><button id="closeSettings" class="icon-button modal-close" aria-label="Fermer les réglages"><svg><use href="#icon-close"/></svg></button><p class="eyebrow">LES RÈGLES DU SORT</p><h2 id="settingsTitle">Réglages du tirage</h2><label class="toggle-setting"><span><strong>Une victoire par personne</strong><small>Écarter les gagnants précédents de toutes les roues. Désactivé : chacun peut gagner plusieurs cadeaux.</small></span><input type="checkbox" id="excludeWinners"><span class="toggle-track" aria-hidden="true"></span></label><div class="settings-note"><svg><use href="#icon-check"/></svg><p>Les listes et les résultats sont conservés sur ce navigateur, même après avoir fermé la page.</p></div><div class="reset-setting"><strong>Recommencer la soirée</strong><p>Remettre les listes d’origine et vider le grimoire.</p><button id="resetButton" class="danger-button">Réinitialiser la session</button></div></dialog>
+  <dialog id="resetDialog" class="modal" aria-labelledby="resetTitle"><p class="eyebrow">NOUVEAU DÉPART</p><h2 id="resetTitle">Recommencer tous les tirages ?</h2><p class="modal-hint">L’historique sera vidé et les six listes du tableau seront rétablies. Tu peux exporter les résultats avant de continuer.</p><div class="modal-actions"><button id="cancelReset" class="secondary-button">Conserver la session</button><button id="confirmReset" class="danger-button">Tout réinitialiser</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">Active JavaScript dans ton navigateur pour utiliser les roues.</div></noscript>
+</body>
+</html>
