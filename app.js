@@ -22,6 +22,7 @@
   let toastTimer;
   let confettiTimer;
   let tickTimer;
+  let previousSpinFamily = -1;
 
   function cleanNames(lines) {
     const seen = new Set();
@@ -330,25 +331,66 @@
     confetti();
   }
 
-  // Vitesses raccordées sans à-coup : faux arrêt, relance, puis six secondes au ralenti.
-  const SPIN_PROFILE = [[0, 0], [2, 950], [5, 700], [8, 8], [9, 5], [11.5, 800], [14, 350], [17, 9], [20, 3], [23, 0]];
-  const SPIN_DISTANCE = SPIN_PROFILE.slice(1).reduce((sum, [time, speed], index) => {
-    const [previousTime, previousSpeed] = SPIN_PROFILE[index];
-    return sum + (time - previousTime) * (previousSpeed + speed) / 2;
-  }, 0);
+  function createSpinPlan() {
+    const range = (min, max) => min + (max - min) * randomIndex(1000001) / 1000000;
+    const families = [0, 1, 2, 3].filter(family => family !== previousSpinFamily);
+    const family = families[randomIndex(families.length)];
+    const duration = range(20.5, 28.5);
+    const tailDuration = range(5, 7);
+    const tailSplit = range(0.42, 0.58);
+    const tailRatio = range(0.25, 0.38);
+    // L’aire de la fin lente vaut 23–25 degrés avant le léger ajustement des tours.
+    const tailSpeed = 2 * range(23, 25) / (tailDuration * (tailSplit + tailRatio));
+    const peak = range(800, 1100);
+    const low = () => range(4, 14);
+    const rebound = () => peak * range(0.68, 1.08);
+    let speeds, weights;
+    if (family === 0) {
+      // Après l’accélération, la vitesse ne fait que diminuer jusqu’à l’arrêt.
+      speeds = [0, peak, peak * range(0.72, 0.94), peak * range(0.25, 0.45), tailSpeed];
+      weights = [1.6, 3.8, 4.5, 3.4];
+    } else if (family === 1) {
+      speeds = [0, peak, peak * range(0.65, 0.9), low(), rebound(), peak * range(0.22, 0.42), tailSpeed];
+      weights = [1.7, 2.4, 2.7, 1.8, 2.3, 2.8];
+    } else if (family === 2) {
+      speeds = [0, peak, low(), rebound(), low(), rebound(), peak * range(0.2, 0.35), tailSpeed];
+      weights = [1.5, 2.8, 1.6, 2.7, 1.4, 2.2, 2.5];
+    } else {
+      // La reprise arrive après un premier freinage plus long.
+      speeds = [0, peak, peak * range(0.5, 0.7), low(), peak * range(0.45, 0.8), tailSpeed];
+      weights = [1.7, 5.5, 4.2, 1.6, 2];
+    }
+    weights = weights.map(weight => weight * range(0.8, 1.2));
+    const weightTotal = weights.reduce((sum, weight) => sum + weight, 0);
+    const mainDuration = duration - tailDuration;
+    const profile = [[0, 0]];
+    let elapsed = 0;
+    for (let i = 1; i < speeds.length; i++) {
+      elapsed += mainDuration * weights[i - 1] / weightTotal;
+      profile.push([i === speeds.length - 1 ? mainDuration : elapsed, speeds[i]]);
+    }
+    profile.push([mainDuration + tailDuration * tailSplit, tailSpeed * tailRatio], [duration, 0]);
+    const distance = profile.slice(1).reduce((sum, [time, speed], index) => {
+      const [previousTime, previousSpeed] = profile[index];
+      return sum + (time - previousTime) * (previousSpeed + speed) / 2;
+    }, 0);
+    const turns = Math.max(1, Math.round(distance / 360 + range(-0.25, 0.25)));
+    previousSpinFamily = family;
+    return { family, profile, distance, duration, turns, tailDuration };
+  }
 
-  function spinMotion(seconds) {
+  function spinMotion(plan, seconds) {
     let distance = 0;
-    for (let i = 1; i < SPIN_PROFILE.length; i++) {
-      const [t0, v0] = SPIN_PROFILE[i - 1];
-      const [t1, v1] = SPIN_PROFILE[i];
+    for (let i = 1; i < plan.profile.length; i++) {
+      const [t0, v0] = plan.profile[i - 1];
+      const [t1, v1] = plan.profile[i];
       const duration = t1 - t0;
       if (seconds >= t1) { distance += duration * (v0 + v1) / 2; continue; }
       const u = Math.max(0, (seconds - t0) / duration);
       // Intégrale de v0 + (v1-v0) × smoothstep(u), toujours positive.
       distance += duration * (v0 * u + (v1 - v0) * (u ** 3 - u ** 4 / 2));
       const speed = v0 + (v1 - v0) * (3 * u ** 2 - 2 * u ** 3);
-      return { progress: distance / SPIN_DISTANCE, speed: speed / SPIN_DISTANCE };
+      return { progress: Math.min(1, Math.max(0, distance / plan.distance)), speed: Math.max(0, speed / plan.distance) };
     }
     return { progress: 1, speed: 0 };
   }
@@ -357,8 +399,12 @@
     if (spinning || document.querySelector('dialog[open]')) return;
     const names = eligible();
     if (!names.length) return;
-    let index;
-    try { index = randomIndex(names.length); } catch (error) { notify(error.message); return; }
+    const shortAnimation = reducedMotion.matches;
+    let index, plan;
+    try {
+      index = randomIndex(names.length);
+      plan = shortAnimation ? null : createSpinPlan();
+    } catch (error) { notify(error.message); return; }
     unlockAudio();
     spinning = true;
     renderPrizes(); updateControls();
@@ -370,9 +416,8 @@
     const destination = ((90 - (index + 0.5) * slice) % 360 + 360) % 360;
     const start = rotation;
     const delta = ((destination - (start % 360)) + 360) % 360;
-    const target = start + 360 * 21 + delta;
-    const shortAnimation = reducedMotion.matches;
-    const duration = shortAnimation ? 150 : 23000;
+    const target = start + 360 * (plan?.turns || 0) + delta;
+    const duration = shortAnimation ? 150 : plan.duration * 1000;
     const started = performance.now();
     let previousBoundary = Math.floor((start - 90) / slice);
     let stopped = false;
@@ -398,7 +443,7 @@
     function frame(now) {
       if (stopped) return;
       const progress = Math.min(1, Math.max(0, (now - started) / duration));
-      const motion = shortAnimation ? { progress: progress === 1 ? 1 : 0, speed: 0 } : spinMotion(progress * 23);
+      const motion = shortAnimation ? { progress: progress === 1 ? 1 : 0, speed: 0 } : spinMotion(plan, progress * plan.duration);
       rotation = start + (target - start) * motion.progress;
       $('wheelRotor').setAttribute('transform', `rotate(${rotation} 300 300)`);
       const boundary = Math.floor((rotation - 90) / slice);
