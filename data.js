@@ -28,6 +28,6 @@ window.TIRAGE_DATA = [
   {
     id: 'amazon', title: 'Cartes cadeaux Amazon', shortTitle: 'Cartes Amazon',
     subtitle: 'Deux cartes cadeaux, deux chances de gagner.', accent: '#ffc069', requiredDraws: 2,
-    participants: ['FTN AIZU', 'RYX', 'SALOME', 'ZERNES', 'SARAH', "CAIM'S", 'ALEX', 'SIKO', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'KAMI', 'MATEO', 'ZAPOR', 'TOGNO', 'VWEXP', 'MOUNETTE', 'JUJU', 'KEYBOT', 'GABINOO', 'JOGA', 'LUNYX']
+    participants: ['FTN AIZU', 'RYX', 'SALOME', 'ZERNES', 'SARAH', "CAIM'S", 'ALEX', 'SIKO', 'TARIK', 'MARSIK', 'LUCILLE', 'WALID', 'TOLOUNI', 'ZAZA', 'KAMI', 'MATEO', 'ZAPOR', 'TOGNO', 'VWEXP', 'MOUNETTE', 'JUJU', 'KEYBOT', 'GABINOO', 'JOGA', 'LUNYX', 'MOMOY']
   }
 ];
